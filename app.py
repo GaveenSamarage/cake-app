@@ -32,7 +32,7 @@ def init_db():
     # Check if empty, then seed initial default 1kg datasets
     cursor.execute("SELECT COUNT(*) FROM cakes")
     if cursor.fetchone()[0] == 0:
-        default_cakes = ["Butter Cake", "Chocolate Cake", "Date Cake", "Coffee Cake"]
+        default_cakes = ["Butter Cake", "Chocolate Cake", "Date Cake", "Coffee Cake","Banana Cake"]
         for cake in default_cakes:
             cursor.execute("INSERT INTO cakes (name) VALUES (?)", (cake,))
         
@@ -62,6 +62,16 @@ def init_db():
         co_id = cursor.fetchone()[0]
         cursor.executemany("INSERT INTO ingredients (cake_id, name, base_qty, unit) VALUES (?, ?, ?, ?)", [
             (co_id, "Flour", 500, "g"), (co_id, "Sugar", 500, "g"), (co_id, "Butter", 500, "g"), (co_id, "Coffee Powder", 25, "g"), (co_id, "Eggs", 8, "pcs")
+        ])
+        
+        cursor.execute("SELECT id FROM cakes WHERE name='Banana Cake'")
+        ba_id = cursor.fetchone()[0]
+        cursor.executemany("INSERT INTO ingredients (cake_id, name, base_qty, unit) VALUES (?, ?, ?, ?)", [
+            (ba_id, "Flour", 400, "g"),
+            (ba_id, "Sugar", 350, "g"),
+            (ba_id, "Butter", 250, "g"),
+            (ba_id, "Mashed Bananas", 400, "g"),
+            (ba_id, "Eggs", 4, "pcs")
         ])
         
     conn.commit()
